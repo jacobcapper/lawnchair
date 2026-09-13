@@ -31,6 +31,37 @@ interface FolderDao {
     @Query("SELECT MAX(rank) FROM Folders")
     suspend fun getMaxFolderRank(): Int?
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFolderItem(item: FolderItemEntity)
+
+    @Query("SELECT COUNT(*) FROM Folders WHERE id = :folderId")
+    suspend fun countFolder(folderId: Int): Int
+
+    @Query("SELECT item_info FROM FolderItems WHERE folderId = :folderId AND item_info IS NOT NULL")
+    suspend fun getFolderItemKeys(folderId: Int): List<String>
+
+    @Query("SELECT MAX(rank) FROM FolderItems WHERE folderId = :folderId")
+    suspend fun getMaxItemRank(folderId: Int): Int?
+
+    /**
+     * Appends a single item to a folder, keeping the existing items untouched.
+     *
+     * @return true when the item was added, false when the folder is gone or already contains it.
+     */
+    @Transaction
+    suspend fun addItemToFolder(folderId: Int, componentKey: String): Boolean {
+        if (countFolder(folderId) == 0) return false
+        if (getFolderItemKeys(folderId).contains(componentKey)) return false
+        insertFolderItem(
+            FolderItemEntity(
+                folderId = folderId,
+                rank = (getMaxItemRank(folderId) ?: -1) + 1,
+                componentKey = componentKey,
+            ),
+        )
+        return true
+    }
+
     @Query("DELETE FROM FolderItems WHERE folderId = :folderId")
     suspend fun deleteFolderItemsByFolderId(folderId: Int)
 

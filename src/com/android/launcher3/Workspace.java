@@ -145,6 +145,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import app.lawnchair.allapps.DrawerFolderDragController;
 import app.lawnchair.hotseat.HotseatPagedView;
 import app.lawnchair.preferences2.PreferenceCacheExtensionsKt;
 import static app.lawnchair.util.LawnchairUtilsKt.toBitmap;
@@ -556,7 +557,10 @@ public class Workspace<T extends View & PageIndicator> extends PagedView<T>
         if (mAccessibilityDragListener != null) {
             mAccessibilityDragListener.onDragStart(dragObject, options);
         }
-        if (!mLauncher.isInState(EDIT_MODE)) {
+        // LC-Feature: Folder support in All Apps. Dragging an app onto a drawer folder needs the
+        // drawer to stay on screen, so the spring loaded home screen is skipped for those drags.
+        if (!mLauncher.isInState(EDIT_MODE)
+                && !DrawerFolderDragController.shouldKeepAppDrawerOpen(mLauncher, dragObject)) {
             mLauncher.getStateManager().goToState(SPRING_LOADED);
         }
         mStatsLogManager.logger().withItemInfo(dragObject.dragInfo)

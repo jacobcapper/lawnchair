@@ -139,6 +139,11 @@ fun AppDrawerFoldersPreference(
                     label = stringResource(id = R.string.apps_in_folder_label),
                     description = stringResource(id = R.string.apps_in_folder_description),
                 )
+                SwitchPreference(
+                    adapter = prefs.drawerFolderDragAndDrop.getAdapter(),
+                    label = stringResource(id = R.string.drawer_folder_drag_and_drop_label),
+                    description = stringResource(id = R.string.drawer_folder_drag_and_drop_description),
+                )
             }
             PreferenceGroup(heading = stringResource(R.string.folders_label)) {
                 PreferenceTemplate(

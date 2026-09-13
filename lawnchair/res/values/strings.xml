@@ -135,6 +135,10 @@
     <string name="delete_label">Delete</string>
     <string name="folder_list_note">Swipe left to edit, swipe right to delete, or tap to update items</string>
 
+    <string name="drawer_folder_drag_and_drop_label">Drag and drop into folders</string>
+    <string name="drawer_folder_drag_and_drop_description">Drag an app onto a folder in the app drawer to add it. Drag it to the top of the screen instead to drop it on the home screen</string>
+    <string name="drawer_folder_drag_home_screen_hint">Home screen</string>
+
     <string name="apps_in_folder_label">Hide folder apps</string>
     <string name="apps_in_folder_description">Apps assigned to folders are excluded from app lists</string>
 
