@@ -111,13 +111,16 @@ class LawnchairAlphabeticalAppsList<T>(
                 position++
             }
         } else {
+            // A folder with fewer than two apps is normally not worth a row of its own, but it does
+            // need to be on screen for an app to be dragged into it.
+            val showEveryFolder = prefs.drawerFolderDragAndDrop.get()
             folderList.forEach { folderEntry ->
                 val resolvedApps = folderEntry.itemComponentKeys.mapNotNull { keyString ->
                     val componentKey = ComponentKey.fromString(keyString) ?: return@mapNotNull null
                     appsStore.getApp(componentKey) as? AppInfo
                 }
 
-                if (resolvedApps.size > 1) {
+                if (resolvedApps.size > 1 || showEveryFolder) {
                     val folderInfo = FolderInfo().apply {
                         id = folderEntry.id
                         title = folderEntry.title

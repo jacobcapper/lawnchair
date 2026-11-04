@@ -46,6 +46,16 @@ class FolderService @Inject constructor(
         folderDao.replaceFolderItems(folderInfoId, title, items)
     }
 
+    /**
+     * Appends [componentKey] to the folder identified by [folderInfoId] without touching the items
+     * that are already in it. Used by the app drawer drag & drop.
+     *
+     * @return true when the folder was actually changed.
+     */
+    suspend fun addItemToFolder(folderInfoId: Int, componentKey: String): Boolean = withContext(Dispatchers.IO) {
+        folderDao.addItemToFolder(folderInfoId, componentKey)
+    }
+
     suspend fun saveFolderInfo(title: String) = withContext(Dispatchers.IO) {
         val rank = (folderDao.getMaxFolderRank() ?: -1) + 1
         folderDao.insertFolder(FolderInfoEntity(title = title, rank = rank))

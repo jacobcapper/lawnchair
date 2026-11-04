@@ -322,6 +322,16 @@ public class FolderIcon extends FrameLayout implements FloatingIconViewCompanion
         mOpenAlarm.cancelAlarm();
     }
 
+    /**
+     * LC-Feature: Highlights this folder icon while an item is dragged over it in the app drawer.
+     *
+     * The regular accept animation delegates its drawing to the {@link CellLayout} the icon lives
+     * in so the enlarged background is not clipped, which app drawer folders do not have.
+     */
+    public void setDrawerDragAccepting(boolean accepting) {
+        mBackground.animateScale(accepting, /* isHovered= */ false);
+    }
+
     private void onDrop(final ItemInfo item, DragObject d, Rect finalRect,
             float scaleRelativeToDragLayer, int index, boolean itemReturnedOnFailedDrop) {
         item.cellX = -1;
